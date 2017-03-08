@@ -27,6 +27,12 @@ var app = {
           self.showAlert('Store Initialized','info');
         });
         $('.search-key').on('keyup', $.proxy(this.findByName, this));
+
+        if(navigator.notification){
+          navigator.notification.alert('test',null,'test','OK');
+        }else{
+          alert('test');
+        }
     }
 
 };
