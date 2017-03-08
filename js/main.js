@@ -1,38 +1,36 @@
 var app = {
 
     findByName: function() {
-        console.log('findByName');
         this.store.findByName($('.search-key').val(), function(employees) {
-            var l = employees.length;
-            var e;
+            var l = employees.length,
+                fullName, e;
+
             $('.employee-list').empty();
             for (var i=0; i<l; i++) {
                 e = employees[i];
-                $('.employee-list').append('<li><a href="#employees/' + e.id + '">' + e.firstName + ' ' + e.lastName + '</a></li>');
+                fullName = e.firstName + ' ' + e.lastName;
+
+                $('.employee-list').append('<li><a href="#" onclick="javascript:app.showAlert(\''+fullName+'\')" >' + fullName + '</a></li>');
             }
         });
     },
 
-    showAlert: function(message,title){
+    showAlert: function(message){
+      var title = 'Title';
+
       if(navigator.notification){
         navigator.notification.alert(message,null,title,'OK');
       }else{
-        alert(title ? (title+": "+message) : message);
+        alert(title+": "+message);
       }
     },
 
     initialize: function() {
       //LocalStorageStore()//WebSqlStore()
-        this.store = new MemoryStore(function(){
-          self.showAlert('Store Initialized','info');
-        });
+        this.store = new MemoryStore();
         $('.search-key').on('keyup', $.proxy(this.findByName, this));
 
-        if(navigator.notification){
-          navigator.notification.alert('test',null,'test','OK');
-        }else{
-          alert('test');
-        }
+        $('.search-key').trigger('keyup');
     }
 
 };
